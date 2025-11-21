@@ -41,9 +41,10 @@ const blur = document.getElementById('blur');
 const aberr = document.getElementById('aberr');
 const scanSpeed = document.getElementById('scanSpeed');
 
-// Create or find a small on-page debug log so the user can see logs without DevTools
+// Optional on-page debug log (visible only when enabled)
 let debugEl = document.getElementById('debugLog');
-if (!debugEl) {
+const _enableDebug = (typeof window !== 'undefined') && (new URLSearchParams(window.location.search).get('debug') === '1' || localStorage.getItem('crt-debug') === '1');
+if (_enableDebug && !debugEl) {
   try {
     debugEl = document.createElement('pre');
     debugEl.id = 'debugLog';
@@ -61,20 +62,17 @@ if (!debugEl) {
     debugEl.style.borderRadius = '6px';
     debugEl.style.whiteSpace = 'pre-wrap';
     document.body.appendChild(debugEl);
-  } catch (e) {
-    // document may not be ready; swallow and leave debugEl null
-    debugEl = null;
-  }
+  } catch (e) { debugEl = null; }
 }
 
 function uiLog(...args) {
   try {
-    const s = args.map(a => (typeof a === 'object' ? JSON.stringify(a) : String(a))).join(' ');
+    // Always log to console; write to on-page debug only when enabled
+    console.log(...args);
     if (debugEl) {
+      const s = args.map(a => (typeof a === 'object' ? JSON.stringify(a) : String(a))).join(' ');
       debugEl.textContent = s;
     }
-    // also keep console logs for DevTools
-    console.log(...args);
   } catch (e) { console.log(...args); }
 }
 
