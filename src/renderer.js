@@ -43,7 +43,8 @@ const scanSpeed = document.getElementById('scanSpeed');
 
 // Optional on-page debug log (visible only when enabled)
 let debugEl = document.getElementById('debugLog');
-const _enableDebug = (typeof window !== 'undefined') && (new URLSearchParams(window.location.search).get('debug') === '1' || localStorage.getItem('crt-debug') === '1');
+// Enable debug panel by default; disable by setting `crt-debug` in localStorage to '0' or using `?debug=0`
+const _enableDebug = true && !((typeof window !== 'undefined') && (new URLSearchParams(window.location.search).get('debug') === '0' || localStorage.getItem('crt-debug') === '0'));
 if (_enableDebug && !debugEl) {
   try {
     debugEl = document.createElement('pre');
