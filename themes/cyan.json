@@ -1,0 +1,8 @@
+{
+  "id": "cyan",
+  "name": "Cyan",
+  "background": "#000a1a",
+  "foreground": "#00d9ff",
+  "accent": "#00d9ff",
+  "description": "Cool cyan phosphor"
+}

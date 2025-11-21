@@ -1,0 +1,8 @@
+{
+  "id": "magenta",
+  "name": "Magenta",
+  "background": "#1a001a",
+  "foreground": "#ff66ff",
+  "accent": "#ff66ff",
+  "description": "Stylized magenta phosphor"
+}

@@ -1,0 +1,66 @@
+:root{
+  --bg: #000;
+  --text: #33ff33;
+  --accent: #33ff33;
+  --glow: 0.6;
+  --scan-opacity: 0.25;
+  --blur: 0.6px;
+  --aberr: 2px;
+  --scanSpeed: 0.8;
+}
+*{box-sizing:border-box}
+html,body,#app{height:100%;width:100%;margin:0;padding:0;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial}
+body{background:var(--bg);color:var(--text);display:flex}
+#app{display:flex;flex:1}
+
+#controls{position:fixed;top:8px;left:8px;right:8px;display:flex;justify-content:space-between;gap:8px;z-index:50}
+#controls select,#controls button{padding:6px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:var(--text)}
+
+#terminalWrap{flex:1;margin:48px 220px 24px 24px;position:relative;display:flex}
+#terminal{flex:1;border-radius:6px;overflow:hidden;position:relative}
+/* Overlay sits above the terminal to render scanlines / aberration */
+#overlay{position:absolute;inset:0;pointer-events:none;z-index:35}
+
+#tabBar{position:relative;display:flex;gap:6px;align-items:center;padding:6px}
+#tabBar #newTab{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--text);padding:4px 8px;border-radius:6px}
+#tabs{display:flex;gap:6px}
+.tab{padding:6px 10px;border-radius:6px;background:rgba(255,255,255,0.02);cursor:pointer}
+.tab.active{background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));box-shadow:0 0 8px rgba(0,255,120,0.06)}
+
+/* CRT effects */
+#terminal::before{content:"";position:absolute;inset:0;z-index:5;background:linear-gradient(transparent,rgba(0,0,0,0.35));mix-blend-mode:multiply}
+#overlay{background:transparent}
+
+.crt {
+  filter: drop-shadow(0 0 calc(var(--glow) * 10px) rgba(0,255,120,0.12)) blur(var(--blur));
+}
+
+/* Scanlines */
+/* ensure before/after pseudo-elements have controlled stacking order */
+#overlay::before{content:"";position:absolute;inset:0;z-index:30;background-image:linear-gradient(rgba(0,0,0,var(--scan-opacity)), rgba(0,0,0,0));background-size:100% 4px;mix-blend-mode:overlay;animation:scanAnim var(--scan-anim-duration,3.75s) linear infinite}
+@keyframes scanAnim{0%{background-position:0 0}100%{background-position:0 4px}}
+
+/* Chromatic aberration - simple simulation */
+#overlay::after{content:"";position:absolute;inset:-2px;z-index:40;pointer-events:none;mix-blend-mode:screen;filter:contrast(1.1) saturate(1.4) drop-shadow(0 0 var(--aberr) rgba(255,0,50,0.06));}
+
+#configPanel{position:fixed;right:8px;top:56px;width:200px;background:rgba(0,0,0,0.65);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px;color:var(--text);z-index:60;font-size:12px;overflow-y:auto;max-height:calc(100vh - 100px)}
+#configPanel h3{margin:0 0 12px 0;font-size:14px;color:var(--accent)}
+#configPanel label{display:block;margin-top:10px;margin-bottom:4px;font-weight:500;font-size:11px;opacity:0.9}
+#configPanel input[type=range]{width:100%;cursor:pointer;margin-bottom:6px}
+#configPanel input[type=range]::-webkit-slider-thumb{appearance:none;width:12px;height:12px;background:var(--text);border-radius:50%;cursor:pointer}
+#configPanel input[type=range]::-moz-range-thumb{width:12px;height:12px;background:var(--text);border-radius:50%;cursor:pointer;border:none}
+#themeList{width:100%;padding:6px;margin-top:6px;margin-bottom:8px;border-radius:6px;background:#000;border:1px solid rgba(255,255,255,0.2);color:var(--text);font-size:11px;cursor:pointer}
+#themeList option{background:#000;color:var(--text);padding:4px}
+#themeList option:checked{background:var(--text);color:#000}
+#configPanel button{display:block;width:100%;margin-top:10px;padding:8px 6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:var(--text);cursor:pointer;font-size:11px}
+#configPanel button:hover{background:rgba(255,255,255,0.12)}
+
+/* Responsive scaling */
+@media (max-width:900px){
+  #terminalWrap{margin-right:8px}
+  #configPanel{display:none}
+}
+
+/* xterm container styles */
+.xterm-viewport,.xterm-screen{background:transparent}
+.xterm .xterm-rows{color:var(--text)}

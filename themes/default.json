@@ -1,0 +1,8 @@
+{
+  "id": "default",
+  "name": "Green Phosphor",
+  "background": "#001100",
+  "foreground": "#33ff33",
+  "accent": "#33ff33",
+  "description": "Classic green phosphor look"
+}

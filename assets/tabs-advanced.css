@@ -1,0 +1,45 @@
+body {
+  --context-menu-open: none;
+}
+
+#contextMenu {
+  display: var(--context-menu-open, none);
+  position: fixed;
+  background: rgba(0,0,0,0.7);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  padding: 4px;
+  z-index: 100;
+  min-width: 120px;
+}
+
+#contextMenu button {
+  display: block;
+  width: 100%;
+  padding: 6px 10px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+#contextMenu button:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+.tab-rename-input {
+  padding: 6px 10px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text);
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+.tab-rename-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
